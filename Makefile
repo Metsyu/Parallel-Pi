@@ -1,7 +1,7 @@
 
 GCC         = gcc
-EXE	    	= parallel-pi
-OBJ	    	= $(EXE).o
+EXE	    = parallel-pi
+OBJ	    = $(EXE).o
 SOURCE      = $(EXE).c
 
 default: $(EXE)
