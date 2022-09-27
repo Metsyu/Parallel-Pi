@@ -14,12 +14,13 @@ void * runner()
 	//Lock mutex
 	pthread_mutex_lock(&mutex);
 	
-	//Calculate pi
 	for(int i = 0; i < 2500000; i++)
 	{
+		//Generate a point (x,y)
 		float x = 2.0 * ((float)rand() / ((float)RAND_MAX + 1.0)) - 1.0;
 		float y = 2.0 * ((float)rand() / ((float)RAND_MAX + 1.0)) - 1.0;
 		
+		//If (x,y) fall in the circle, iterate points
 		if(sqrt((x * x) + (y * y)) < 1.0 && sqrt((x * x) + (y * y)) > -1.0)
 			points++;
 	}
@@ -63,7 +64,7 @@ int main()
 	//Destroy mutex
 	pthread_mutex_destroy(&mutex);
 	
-	//Print estimate
+	//Calculate and print estimate
 	float estimate = 4.0 * (float)points/10000000.0;
 	printf("The estimate for pi is %f\n", estimate);
 	
