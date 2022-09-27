@@ -4,15 +4,17 @@
 #include <math.h>
 #include <time.h>
 
+//Global variables
 #define NUM_THREADS 4
-
 int points = 0;
 pthread_mutex_t mutex;
 
 void * runner()
 {
+	//Lock mutex
 	pthread_mutex_lock(&mutex);
 	
+	//Calculate pi
 	for(int i = 0; i < 2500000; i++)
 	{
 		float x = 2.0 * ((float)rand() / ((float)RAND_MAX + 1.0)) - 1.0;
@@ -22,6 +24,7 @@ void * runner()
 			points++;
 	}
 	
+	//Unlock mutex
 	pthread_mutex_unlock(&mutex);
 	
 	pthread_exit(NULL);
@@ -29,11 +32,14 @@ void * runner()
 
 int main()
 {
+	//Seed rand()
 	srand(time(NULL));
 	pthread_t threads[NUM_THREADS];
 	
+	//Initialize mutex
 	pthread_mutex_init(&mutex, NULL);
 
+	//Create and deploy pthreads
 	int rc;
 	long t;
 	for(t = 0; t < NUM_THREADS; t++)
@@ -48,13 +54,16 @@ int main()
 		}
 	}
 	
+	//Join pthreads back to main
 	for(t = 0; t < NUM_THREADS; t++)
 	{
 		pthread_join(threads[t], NULL);
 	}
 	
+	//Destroy mutex
 	pthread_mutex_destroy(&mutex);
 	
+	//Print estimate
 	float estimate = 4.0 * (float)points/10000000.0;
 	printf("The estimate for pi is %f\n", estimate);
 	
