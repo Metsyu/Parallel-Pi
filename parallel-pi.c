@@ -11,9 +11,6 @@ pthread_mutex_t mutex;
 
 void * runner()
 {
-	//Lock mutex
-	pthread_mutex_lock(&mutex);
-	
 	for(int i = 0; i < 2500000; i++)
 	{
 		//Generate a point (x,y)
@@ -22,11 +19,16 @@ void * runner()
 		
 		//If (x,y) fall in the circle, iterate points
 		if(sqrt((x * x) + (y * y)) < 1.0 && sqrt((x * x) + (y * y)) > -1.0)
+		{
+			//Lock mutex
+			pthread_mutex_lock(&mutex);
+			
 			points++;
+			
+			//Unlock mutex
+			pthread_mutex_unlock(&mutex);
+		}
 	}
-	
-	//Unlock mutex
-	pthread_mutex_unlock(&mutex);
 	
 	pthread_exit(NULL);
 }
